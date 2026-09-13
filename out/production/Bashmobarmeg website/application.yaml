@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: personal-website-backend
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/personal_website}
+    username: ${DB_USERNAME:ryanabdaulaziz}
+    password: ${DB_PASSWORD:}
+
+  flyway:
+    enabled: true
+
+app:
+  # Override this migrated development key with JWT_SECRET_KEY outside local development.
+  jwt-secret-key: ${JWT_SECRET_KEY:0AKw2vspqu4UBsckwjeYSm20GQ3CLNL5OMpKd3sJt7cZAcBy2N4hN0Tie8NllDBp}
+  bootstrap-admin:
+    email: ${BOOTSTRAP_ADMIN_EMAIL:}
+    password: ${BOOTSTRAP_ADMIN_PASSWORD:}
+    name: ${BOOTSTRAP_ADMIN_NAME:Initial Administrator}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: beans,info,mappings
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: Bashmobarmeg Academy
+    description: Teaching programming
+    version: 1.0.1
+
+
+test:
+  name: Ryan Abdulaziz

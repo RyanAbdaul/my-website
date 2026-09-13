@@ -1,0 +1,23 @@
+:root {
+  --canvas: #ffffff;
+  --ink: #102033;
+  --muted-ink: #5a6b7d;
+  --coral: #0ea5e9;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: var(--canvas);
+  font-family: 'DM Sans', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+a { -webkit-tap-highlight-color: transparent; }

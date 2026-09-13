@@ -1,0 +1,70 @@
+# Runs the Postgres database and the Spring Boot backend together.
+#
+# Start with:
+#   docker compose up -d
+# Stop with:
+#   docker compose down
+# Remove the database volume too:
+#   docker compose down -v
+#
+# All secrets are read from the backend's .env file (KEY=value pairs). The
+# backend imports it via Spring's `optional:file:.env[.properties]` mechanism,
+# so the container must mount that file (or receive the values as env vars).
+
+services:
+  # ---------------------------------------------------------------- postgres
+  postgres:
+    image: postgres:17-alpine
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "${POSTGRES_HOST_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    # Migrations are run by Spring Flyway on the backend (V1..V30 in
+    # src/main/resources/db/migration), which is the app's single source of
+    # truth — do not also mount them as init scripts or they would run twice.
+
+  # ----------------------------------------------------------------- backend
+  backend:
+    build:
+      context: ./personal-website-backend
+      dockerfile: Dockerfile
+    container_name: backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - ./personal-website-backend/.env
+    environment:
+      # Point the app at the Postgres container instead of localhost:5433.
+      DB_URL: ${DB_URL:-jdbc:postgresql://postgres:5432/${POSTGRES_DB:-postgres}}
+      DB_USERNAME: ${DB_USERNAME:-${POSTGRES_USER:-postgres}}
+      DB_PASSWORD: ${DB_PASSWORD:-${POSTGRES_PASSWORD:-postgres}}
+      SERVER_PORT: ${SERVER_PORT:-8080}
+      UPLOAD_DIR: /app/uploads
+    ports:
+      - "${BACKEND_HOST_PORT:-8080}:8080"
+    volumes:
+      # Persist uploaded member photos across restarts.
+      - uploads:/app/uploads
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/api/actuator/health | grep -q '\"status\":\"UP\"'"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+    # Wait for Postgres before Flyway runs the migrations.
+
+volumes:
+  pgdata:
+  uploads:

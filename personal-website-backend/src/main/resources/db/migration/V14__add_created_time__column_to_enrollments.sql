@@ -1,0 +1,1 @@
+ALTER TABLE enrollments ADD column created_time TIMESTAMP;

@@ -1,0 +1,1 @@
+ALTER TABLE instructors ADD column created_time TIMESTAMP;

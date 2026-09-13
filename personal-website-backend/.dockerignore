@@ -1,0 +1,26 @@
+# Build artifacts
+target/
+*.jar
+*.jar.original
+
+# Maven wrapper cache
+.mvn/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+*.iml
+*.ipr
+*.iws
+
+# Secrets — values are injected at runtime via env_file / env, never baked in
+.env
+
+# Local uploads and runtime logs
+uploads/
+
+# Git metadata
+.git/
+.gitignore
+.gitattributes
