@@ -8,10 +8,10 @@ import com.ryan.personal_website_backend.entity.Tag;
 import com.ryan.personal_website_backend.exception.ArticleNotFoundException;
 import com.ryan.personal_website_backend.repository.ArticleRepo;
 import com.ryan.personal_website_backend.repository.TagRepo;
-import com.ryan.personal_website_backend.repository.MemberRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.domain.Sort;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -25,14 +25,13 @@ public class ArticleService {
 
     private final ArticleRepo articleRepo;
     private final TagRepo tagRepo;
-    private final MemberRepo memberRepo;
     private final LinkedInPublicationService linkedInPublicationService;
 
     public List<ResponseArticleDTO> getAllArticles(String query, List<String> tags, LocalDate from, LocalDate to) {
         Specification<Article> specification = Specification.allOf(
                 hasQuery(query), hasAnyTag(tags), createdOnOrAfter(from), createdBefore(to)
         );
-        return articleRepo.findAll(specification)
+        return articleRepo.findAll(specification, Sort.by(Sort.Direction.DESC, "createTime"))
                 .stream()
                 .map(this::mapToResponseDTO)
                 .toList();
@@ -49,8 +48,6 @@ public class ArticleService {
         article.setTitle(dto.getTitle());
         article.setContent(dto.getContent());
         article.setTags(resolveTags(dto.getTags()));
-        if (dto.getMemberId() != null) article.setMember(memberRepo.findById(dto.getMemberId()).orElseThrow(() -> new IllegalArgumentException("Member not found")));
-
         Article saved = articleRepo.save(article);
         linkedInPublicationService.publishAsync(saved.getId());
         return mapToResponseDTO(saved);
@@ -63,8 +60,6 @@ public class ArticleService {
         article.setTitle(dto.getTitle());
         article.setContent(dto.getContent());
         article.setTags(resolveTags(dto.getTags()));
-        if (dto.getMemberId() != null) article.setMember(memberRepo.findById(dto.getMemberId()).orElseThrow(() -> new IllegalArgumentException("Member not found")));
-
         Article updated = articleRepo.save(article);
         return mapToResponseDTO(updated);
     }

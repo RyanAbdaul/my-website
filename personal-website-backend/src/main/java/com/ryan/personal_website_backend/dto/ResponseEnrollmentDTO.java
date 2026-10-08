@@ -1,4 +1,3 @@
-// ResponseEnrollmentDTO.java
 package com.ryan.personal_website_backend.dto;
 
 import lombok.AllArgsConstructor;

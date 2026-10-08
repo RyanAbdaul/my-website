@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
+import com.ryan.personal_website_backend.entity.CourseStatus;
 
 @Getter
 @AllArgsConstructor
@@ -19,7 +20,7 @@ public class ResponseCourseDTO {
     Timestamp createTime;
     String thumbnailLink;
     BigDecimal price;
-    List<ResponseMemberSummaryDTO> members;
+    CourseStatus status;
     List<ResponseEnrollmentDTO> enrollments;
     List<ResponseLessonDTO> lessons;
 }

@@ -9,5 +9,4 @@ import java.util.UUID;
 
 public interface ArticleRepo extends JpaRepository<Article, UUID>, JpaSpecificationExecutor<Article> {
     List<Article> findByTagsNameIgnoreCase(String tagName);
-    List<Article> findByMemberIdOrderByCreateTimeDesc(UUID memberId);
 }

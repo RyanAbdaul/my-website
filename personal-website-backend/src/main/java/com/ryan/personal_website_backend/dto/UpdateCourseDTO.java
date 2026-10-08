@@ -6,8 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import java.math.BigDecimal;
-import java.util.UUID;
-import java.util.List;
+import com.ryan.personal_website_backend.entity.CourseStatus;
 @Getter
 @Setter
 public class UpdateCourseDTO {
@@ -23,5 +22,7 @@ public class UpdateCourseDTO {
 
     @NotBlank
     private String description;
-    private List<UUID> memberIds;
+
+    @NotNull
+    private CourseStatus status;
 }

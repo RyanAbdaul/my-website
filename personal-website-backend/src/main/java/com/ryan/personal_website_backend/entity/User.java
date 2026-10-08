@@ -55,8 +55,16 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Student student;
 
-    @OneToOne(mappedBy = "user", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Member member;
+    @Column(name = "display_name")
+    private String displayName;
+
+    private String headline;
+
+    @Column(columnDefinition = "TEXT")
+    private String biography;
+
+    @Column(name = "photo_url", columnDefinition = "TEXT")
+    private String photoUrl;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

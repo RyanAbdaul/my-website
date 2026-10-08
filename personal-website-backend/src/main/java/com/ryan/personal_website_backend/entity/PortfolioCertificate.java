@@ -31,5 +31,4 @@ public class PortfolioCertificate {
 
     @Column(name = "display_order", nullable = false)
     private Integer displayOrder;
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "member_id") private Member member;
 }

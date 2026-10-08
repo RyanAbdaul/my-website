@@ -6,11 +6,8 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,10 +35,9 @@ public class CoursesController {
     public List<ResponseCourseDTO> getAllCourses(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) Double minPrice,
-            @RequestParam(required = false) Double maxPrice,
-            @RequestParam(required = false) String membersName
+            @RequestParam(required = false) Double maxPrice
             ){
-        return courseService.getAllCourses(title, minPrice, maxPrice, membersName);
+        return courseService.getAllCourses(title, minPrice, maxPrice);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -55,7 +51,7 @@ public class CoursesController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCourseById(
             @PathVariable UUID courseId
-    ) throws AccessDeniedException {
+    ) {
         courseService.deleteCourseById(courseId);
     }
     

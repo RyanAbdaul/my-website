@@ -2,12 +2,9 @@ package com.ryan.personal_website_backend.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record MemberRequest(
-        @NotBlank String slug,
+public record UpdateAdminProfileDTO(
         @NotBlank String name,
         String headline,
         String biography,
-        String photoUrl,
-        String email,
-        String password
+        String photoUrl
 ) {}

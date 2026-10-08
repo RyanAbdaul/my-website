@@ -1,6 +1,5 @@
 spring:
   config:
-    # Local secrets live in the ignored backend .env file as KEY=value pairs.
     import: optional:file:.env[.properties]
   application:
     name: personal-website-backend
@@ -16,12 +15,10 @@ spring:
 server:
   port: ${SERVER_PORT:8080}
   servlet:
-    # Keep REST endpoints separate from client-side Vue routes such as /articles.
     context-path: /api
 
 app:
   upload-dir: ${UPLOAD_DIR:uploads}
-  # Override this migrated development key with JWT_SECRET_KEY outside local development.
   jwt-secret-key: ${JWT_SECRET_KEY:0AKw2vspqu4UBsckwjeYSm20GQ3CLNL5OMpKd3sJt7cZAcBy2N4hN0Tie8NllDBp}
   bootstrap-admin:
     email: ${BOOTSTRAP_ADMIN_EMAIL:}
@@ -32,14 +29,13 @@ app:
     client-id: ${LINKEDIN_CLIENT_ID:}
     client-secret: ${LINKEDIN_CLIENT_SECRET:}
     redirect-uri: ${LINKEDIN_REDIRECT_URI:http://localhost:8080/api/linkedin/callback}
-    # A base64-encoded 32-byte AES key. Never commit a production value.
     token-encryption-key: ${LINKEDIN_TOKEN_ENCRYPTION_KEY:}
     api-version: ${LINKEDIN_API_VERSION:202603}
 management:
   endpoints:
     web:
       exposure:
-        include: health,beans,info,mappings
+        include: health,info
   info:
     env:
       enabled: true
@@ -53,7 +49,3 @@ info:
 
 test:
   name: Ryan Abdulaziz
-
-springdoc:
-  swagger-ui:
-    path: /docs

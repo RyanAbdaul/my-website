@@ -8,7 +8,6 @@ import com.ryan.personal_website_backend.entity.PortfolioCertificate;
 import com.ryan.personal_website_backend.entity.WorkExperience;
 import com.ryan.personal_website_backend.repository.PortfolioCertificateRepo;
 import com.ryan.personal_website_backend.repository.WorkExperienceRepo;
-import com.ryan.personal_website_backend.repository.MemberRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,6 @@ import java.util.UUID;
 public class PortfolioService {
     private final WorkExperienceRepo workExperienceRepo;
     private final PortfolioCertificateRepo certificateRepo;
-    private final MemberRepo memberRepo;
 
     public List<ResponseWorkExperienceDTO> getWorkExperiences() {
         return workExperienceRepo.findAllByOrderByDisplayOrderAsc().stream()
@@ -72,7 +70,6 @@ public class PortfolioService {
         item.setIssuedDate(dto.issuedDate());
         item.setImagePath(dto.imagePath());
         item.setDisplayOrder(dto.displayOrder() == null ? 999 : dto.displayOrder());
-        if (dto.memberId() != null) item.setMember(memberRepo.findById(dto.memberId()).orElseThrow(() -> new IllegalArgumentException("Member not found")));
         PortfolioCertificate saved = certificateRepo.save(item);
         return new ResponsePortfolioCertificateDTO(saved.getId(), saved.getTitle(), saved.getIssuer(), saved.getIssuedDate(), saved.getImagePath());
     }
@@ -89,7 +86,6 @@ public class PortfolioService {
         item.setIssuedDate(dto.issuedDate());
         item.setImagePath(dto.imagePath());
         if (dto.displayOrder() != null) item.setDisplayOrder(dto.displayOrder());
-        if (dto.memberId() != null) item.setMember(memberRepo.findById(dto.memberId()).orElseThrow(() -> new IllegalArgumentException("Member not found")));
         PortfolioCertificate saved = certificateRepo.save(item);
         return new ResponsePortfolioCertificateDTO(saved.getId(), saved.getTitle(), saved.getIssuer(), saved.getIssuedDate(), saved.getImagePath());
     }

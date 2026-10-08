@@ -8,5 +8,4 @@ import java.util.UUID;
 
 public interface PortfolioCertificateRepo extends JpaRepository<PortfolioCertificate, UUID> {
     List<PortfolioCertificate> findAllByOrderByDisplayOrderAsc();
-    List<PortfolioCertificate> findByMemberIdOrderByDisplayOrderAsc(UUID memberId);
 }

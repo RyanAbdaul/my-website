@@ -57,7 +57,9 @@ public class AdminBootstrap implements ApplicationRunner {
         }
 
         User user = userRepo.save(new User(null, email, passwordEncoder.encode(password), null, null,
-                List.of(new Authority("ROLE_ADMIN"), new Authority("ROLE_STUDENT"))));
+                List.of(new Authority("ROLE_ADMIN"))));
+        user.setDisplayName(name);
+        userRepo.save(user);
         Student admin = new Student();
         admin.setName(name);
         admin.setUser(user);

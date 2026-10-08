@@ -41,24 +41,8 @@ public class AuthenticationController {
         Role role = authentication.getAuthorities().stream()
                 .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))
                 ? Role.ADMIN
-                : authentication.getAuthorities().stream()
-                        .anyMatch(authority -> authority.getAuthority().equals("ROLE_MEMBER"))
-                        ? Role.MEMBER
-                        : Role.STUDENT;
+                : Role.STUDENT;
         return new AuthenticatedUserResponse(authentication.getName(), role);
     }
 
-    @PostMapping("/members")
-    public AuthenticationResponse registerMember(
-            @Valid @RequestBody AuthenticationRequest request) {
-
-        return authenticationService.registerMember(request);
-    }
-
-    @PostMapping("/admin")
-    public AuthenticationResponse registerAdmin(
-            @Valid @RequestBody AuthenticationRequest request) {
-
-        return authenticationService.registerAdmin(request);
-    }
 }

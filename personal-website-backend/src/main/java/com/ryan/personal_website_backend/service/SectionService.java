@@ -23,17 +23,14 @@ public class SectionService {
     private final SectionRepo sectionRepo;
     private final CourseRepo courseRepo;
 
-    // Create a new section
     @Transactional
     public SectionResponseDTO createSection(UUID courseId, SectionRequestDTO sectionRequest) {
         Course course = courseRepo.findById(courseId)
                 .orElseThrow(() -> new CourseDoesNotExistException("Course not found with id: " + courseId));
 
-        // Convert DTO to Entity
         Section section = mapToEntity(sectionRequest);
         section.setCourse(course);
 
-        // Set order index if not provided (append to end)
         if (section.getOrderIndex() == null) {
             sectionRepo.findFirstByCourseIdOrderByOrderIndexDesc(courseId)
                     .ifPresentOrElse(
@@ -46,7 +43,6 @@ public class SectionService {
         return mapToResponseDTO(savedSection);
     }
 
-    // Get all sections for a course
     public List<SectionResponseDTO> getAllSectionsByCourse(UUID courseId) {
         return sectionRepo.findByCourseIdOrderByOrderIndexAsc(courseId)
                 .stream()
@@ -54,14 +50,12 @@ public class SectionService {
                 .collect(Collectors.toList());
     }
 
-    // Get a specific section
     public SectionResponseDTO getSectionById(UUID id) {
         Section section = sectionRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Section not found with id: " + id));
         return mapToResponseDTO(section);
     }
 
-    // Get a specific section ensuring it belongs to a course
     public SectionResponseDTO getSectionByIdAndCourseId(UUID id, UUID courseId) {
         Section section = sectionRepo.findByIdAndCourseId(id, courseId)
                 .orElseThrow(() -> new EntityNotFoundException(
@@ -69,13 +63,11 @@ public class SectionService {
         return mapToResponseDTO(section);
     }
 
-    // Update a section
     @Transactional
     public SectionResponseDTO updateSection(UUID id, SectionRequestDTO sectionRequest) {
         Section section = sectionRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Section not found with id: " + id));
 
-        // Update fields from DTO
         if (sectionRequest.getTitle() != null) {
             section.setTitle(sectionRequest.getTitle());
         }
@@ -90,7 +82,6 @@ public class SectionService {
         return mapToResponseDTO(updatedSection);
     }
 
-    // Update section order
     @Transactional
     public SectionResponseDTO updateSectionOrder(UUID id, Integer newOrderIndex) {
         Section section = sectionRepo.findById(id)
@@ -100,7 +91,6 @@ public class SectionService {
         return mapToResponseDTO(updatedSection);
     }
 
-    // Reorder sections within a course
     @Transactional
     public List<SectionResponseDTO> reorderSections(UUID courseId, List<UUID> sectionIdsInOrder) {
         List<Section> sections = sectionRepo.findByCourseId(courseId);
@@ -123,7 +113,6 @@ public class SectionService {
                 .collect(Collectors.toList());
     }
 
-    // Move section up (decrease order index)
     @Transactional
     public SectionResponseDTO moveSectionUp(UUID id, UUID courseId) {
         Section section = sectionRepo.findByIdAndCourseId(id, courseId)
@@ -137,7 +126,6 @@ public class SectionService {
             if (currentIndex > 0) {
                 Section previousSection = sections.get(currentIndex - 1);
 
-                // Swap order indexes
                 Integer tempOrder = section.getOrderIndex();
                 section.setOrderIndex(previousSection.getOrderIndex());
                 previousSection.setOrderIndex(tempOrder);
@@ -150,7 +138,6 @@ public class SectionService {
         return mapToResponseDTO(section);
     }
 
-    // Move section down (increase order index)
     @Transactional
     public SectionResponseDTO moveSectionDown(UUID id, UUID courseId) {
         Section section = sectionRepo.findByIdAndCourseId(id, courseId)
@@ -163,7 +150,6 @@ public class SectionService {
         if (currentIndex >= 0 && currentIndex < sections.size() - 1) {
             Section nextSection = sections.get(currentIndex + 1);
 
-            // Swap order indexes
             Integer tempOrder = section.getOrderIndex();
             section.setOrderIndex(nextSection.getOrderIndex());
             nextSection.setOrderIndex(tempOrder);
@@ -175,7 +161,6 @@ public class SectionService {
         return mapToResponseDTO(section);
     }
 
-    // Delete a section
     @Transactional
     public void deleteSection(UUID id) {
         Section section = sectionRepo.findById(id)
@@ -183,7 +168,6 @@ public class SectionService {
         sectionRepo.delete(section);
     }
 
-    // Delete a section ensuring it belongs to a course
     @Transactional
     public void deleteSectionByIdAndCourseId(UUID id, UUID courseId) {
         Section section = sectionRepo.findByIdAndCourseId(id, courseId)
@@ -192,28 +176,23 @@ public class SectionService {
         sectionRepo.delete(section);
     }
 
-    // Delete all sections for a course
     @Transactional
     public void deleteAllSectionsByCourse(UUID courseId) {
         sectionRepo.deleteByCourseId(courseId);
     }
 
-    // Check if section exists
     public boolean existsById(UUID id) {
         return sectionRepo.existsById(id);
     }
 
-    // Check if section exists for a course
     public boolean existsByIdAndCourseId(UUID id, UUID courseId) {
         return sectionRepo.existsByIdAndCourseId(id, courseId);
     }
 
-    // Get section count for a course
     public long getSectionCountByCourse(UUID courseId) {
         return sectionRepo.countByCourseId(courseId);
     }
 
-    // Helper method to map SectionRequestDTO to Section entity
     private Section mapToEntity(SectionRequestDTO dto) {
         Section section = new Section();
         section.setTitle(dto.getTitle());
@@ -222,7 +201,6 @@ public class SectionService {
         return section;
     }
 
-    // Helper method to map Section entity to SectionResponseDTO
     private SectionResponseDTO mapToResponseDTO(Section section) {
         return SectionResponseDTO.builder()
                 .id(section.getId())

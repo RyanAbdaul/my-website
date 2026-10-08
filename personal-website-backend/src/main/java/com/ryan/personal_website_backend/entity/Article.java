@@ -40,7 +40,4 @@ public class Article {
     )
     private List<Tag> tags;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
 }

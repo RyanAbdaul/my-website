@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -18,5 +17,4 @@ public class UpdateArticleDTO {
     private String content;
 
     private List<String> tags;
-    private UUID memberId;
 }

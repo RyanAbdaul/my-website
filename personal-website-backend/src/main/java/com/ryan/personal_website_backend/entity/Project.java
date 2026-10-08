@@ -19,5 +19,4 @@ public class Project {
     @Column(name = "image_path") private String imagePath;
     @Column(name = "project_url", nullable = false) private String projectUrl;
     @Column(name = "display_order", nullable = false) private Integer displayOrder;
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "member_id") private Member member;
 }

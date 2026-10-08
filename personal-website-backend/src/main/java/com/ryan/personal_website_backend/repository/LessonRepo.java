@@ -9,5 +9,4 @@ import java.util.UUID;
 public interface LessonRepo extends JpaRepository<Lesson, UUID> {
     List<Lesson> findByCourseId(UUID courseId);
     List<Lesson> findByCourseIdAndTitleContainingIgnoreCase(UUID courseId, String title);
-    boolean existsByIdAndCourse_Members_User_Email(UUID id, String email);
 }

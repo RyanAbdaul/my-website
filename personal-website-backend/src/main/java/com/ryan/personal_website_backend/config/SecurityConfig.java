@@ -1,6 +1,7 @@
 package com.ryan.personal_website_backend.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -27,6 +28,9 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
 
+    @Value("${app.public-site-url}")
+    private String publicSiteUrl;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -45,60 +49,40 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/linkedin/callback", "/linkedin/callback/**").permitAll()
                         .requestMatchers(
                                 "/auth/students",
-                                "/auth/members",
                                 "/auth/login",
                                 "/actuator/health"
                         ).permitAll()
-                        // Swagger / OpenAPI docs
-                        .requestMatchers(
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/swagger-resources/**",
-                                "/swagger-resources",
-                                "/webjars/**",
-                                "/docs",
-                                "/docs/**"
-                        ).permitAll()
                         .requestMatchers(HttpMethod.GET,
                                 "/courses", "/courses/**", "/projects", "/projects/**",
+                                "/profile",
                                 "/work-experiences", "/certificates",
                                 "/lessons", "/lessons/**",
                                 "/articles", "/articles/**",
                                 "/tags", "/tags/**",
-                                "/members", "/members/**",
                                 "/uploads", "/uploads/**",
                                 "/reviews/course/**",
                                 "/sections", "/sections/**"
                         ).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/auth/admin").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/members/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/members/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/members/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/students").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/students").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/enrollments/courses/*/me").hasRole("STUDENT")
-                        .requestMatchers(HttpMethod.POST, "/courses").hasAnyRole("ADMIN", "MEMBER")
-                        .requestMatchers(HttpMethod.PUT, "/courses/**").hasAnyRole("ADMIN", "MEMBER")
-                        .requestMatchers(HttpMethod.DELETE, "/courses/**").hasAnyRole("ADMIN", "MEMBER")
-                        .requestMatchers(HttpMethod.POST, "/lessons").hasAnyRole("ADMIN", "MEMBER")
-                        .requestMatchers(HttpMethod.PUT, "/lessons/**").hasAnyRole("ADMIN", "MEMBER")
-                        .requestMatchers(HttpMethod.DELETE, "/lessons/**").hasAnyRole("ADMIN", "MEMBER")
-                        // Sections - POST, PUT, PATCH for ADMIN and MEMBER
-                        .requestMatchers(HttpMethod.POST, "/sections/**").hasAnyRole("ADMIN", "MEMBER")
-                        .requestMatchers(HttpMethod.PUT, "/sections/**").hasAnyRole("ADMIN", "MEMBER")
-                        .requestMatchers(HttpMethod.PATCH, "/sections/**").hasAnyRole("ADMIN", "MEMBER")
-                        // Sections - DELETE only for ADMIN
-                        .requestMatchers(HttpMethod.DELETE, "/sections/**").hasAnyRole("ADMIN", "MEMBER")
+                        .requestMatchers(HttpMethod.POST, "/courses").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/courses/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/courses/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/lessons").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/lessons/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/lessons/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/sections/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/sections/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/sections/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/sections/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/reviews").hasRole("STUDENT")
                         .requestMatchers(HttpMethod.DELETE, "/reviews/**").hasRole("ADMIN")
                         .requestMatchers("/linkedin/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/articles", "/tags", "/projects", "/work-experiences", "/certificates").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/articles/**", "/projects/**", "/work-experiences/**", "/certificates/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/articles/**", "/tags/**", "/projects/**", "/work-experiences/**", "/certificates/**").hasRole("ADMIN")
-                        .requestMatchers("/actuator/**")
-                        .permitAll()
                         .anyRequest().authenticated()
                 )
 
@@ -119,8 +103,8 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of("*"));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedOrigins(List.of(publicSiteUrl));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

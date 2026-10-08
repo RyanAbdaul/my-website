@@ -21,7 +21,5 @@ public interface SectionRepo extends JpaRepository<Section, UUID> {
 
     long countByCourseId(UUID courseId);
 
-    List<Section> findByCourseIdAndOrderIndexGreaterThan(UUID courseId, Integer orderIndex);
-
     Optional<Section> findFirstByCourseIdOrderByOrderIndexDesc(UUID courseId);
 }

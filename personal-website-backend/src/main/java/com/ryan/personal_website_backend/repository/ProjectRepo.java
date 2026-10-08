@@ -7,5 +7,4 @@ import java.util.UUID;
 
 public interface ProjectRepo extends JpaRepository<Project, UUID> {
     List<Project> findAllByOrderByDisplayOrderAsc();
-    List<Project> findByMemberIdOrderByDisplayOrderAsc(UUID memberId);
 }
