@@ -684,7 +684,7 @@ onMounted(async () => {
           </button>
         </nav>
         <button
-          class="mt-auto text-left text-sm font-bold text-muted-ink hover:text-primary"
+          class="mt-auto text-left text-sm font-bold text-muted-ink hover:text-accent"
           @click="signOut"
         >
           Sign out
@@ -832,7 +832,7 @@ onMounted(async () => {
               <section class="editor-card">
                 <div class="flex flex-wrap items-center justify-between gap-3"><div><p class="eyebrow">Learning content</p><h3 class="mt-1 font-serif text-2xl">Lessons</h3></div><span class="text-sm text-muted-ink">{{ lessons.length }} total</span></div>
                 <form class="mt-5 grid gap-3 sm:grid-cols-[1fr_1fr_auto]" @submit.prevent="saveLesson"><input v-model="lesson.title" class="field" placeholder="Lesson title" required /><input v-model="lesson.videoLink" class="field" type="url" placeholder="Video URL (optional)" /><button class="primary-button" :disabled="loading">{{ editingLessonId ? 'Save lesson' : 'Add lesson' }}</button></form>
-                <button v-if="editingLessonId" class="mt-3 text-sm font-bold text-primary" type="button" @click="resetLesson(selectedCourse.id)">Cancel lesson edit</button>
+                <button v-if="editingLessonId" class="mt-3 text-sm font-bold text-accent" type="button" @click="resetLesson(selectedCourse.id)">Cancel lesson edit</button>
                 <div v-if="lessons.length" class="mt-5 space-y-2"><article v-for="item in lessons" :key="item.id" class="manage-row"><span><b>{{ item.title }}</b><small>{{ item.videoLink || 'No video link' }}</small></span><span class="flex gap-2"><button class="secondary-button" type="button" @click="editLesson(item)">Edit</button><button class="danger-button" type="button" @click="deleteLesson(item.id)">Delete</button></span></article></div><p v-else class="mt-5 text-sm text-muted-ink">No lessons yet. Add the first one above.</p>
               </section>
               <section class="editor-card">
