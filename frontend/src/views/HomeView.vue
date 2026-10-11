@@ -211,7 +211,7 @@ h1 span {
 .hero-sword {
   position: absolute;
   z-index: 2;
-  top: 98%;
+  top: 92%;
   left: 50%;
   width: min(42rem, 125%);
   transform: translate(-50%, -50%);
@@ -358,7 +358,7 @@ h1 span {
     width: min(44rem, 145%);
   }
   .hero-sword {
-    top: 86%;
+    top: 96%;
     width: min(34rem, 125%);
   }
   .course-grid {
@@ -387,7 +387,7 @@ h1 span {
     width: min(38rem, 145%);
   }
   .hero-sword {
-    top: 86%;
+    top: 96%;
     width: min(30rem, 130%);
   }
 }
