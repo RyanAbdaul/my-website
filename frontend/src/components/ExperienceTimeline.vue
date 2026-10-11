@@ -100,7 +100,7 @@ onBeforeUnmount(() => {
 
     <div class="relative mx-auto max-w-300">
       <div class="max-w-2xl">
-        <p class="text-xs font-bold tracking-[0.14em] text-primary uppercase">Experience</p>
+        <p class="text-xs font-bold tracking-[0.14em] text-accent uppercase">Experience</p>
         <h2 id="experience-heading" class="mt-5 font-serif text-5xl leading-[0.9] tracking-[-0.065em] sm:text-7xl">The work behind the ideas.</h2>
         <p class="mt-6 max-w-xl text-base leading-relaxed text-muted-ink sm:text-lg">Scroll through the milestones that have shaped how I build, learn, and collaborate.</p>
       </div>
@@ -115,14 +115,14 @@ onBeforeUnmount(() => {
             <span
               :ref="(el) => setMarker(el, index)"
               class="block size-6 rounded-full border-2 border-muted-ink/60 bg-canvas transition-all duration-500 sm:size-10"
-              :class="index <= activeIndex ? 'scale-125 border-primary bg-primary shadow-[0_0_0_6px_rgba(14,165,233,0.18),0_0_36px_10px_rgba(14,165,233,0.55)]' : ''"
+              :class="index <= activeIndex ? 'scale-125 border-primary bg-primary shadow-[0_0_0_6px_rgba(168,85,247,0.22),0_0_36px_10px_rgba(168,85,247,0.55)]' : ''"
             ></span>
           </div>
 
           <div class="transition-all duration-500" :class="index <= activeIndex ? 'translate-x-0 opacity-100' : 'translate-x-3 opacity-45'">
-            <p class="text-sm font-bold tracking-[0.12em] text-primary uppercase">{{ experience.dates }}</p>
+            <p class="text-sm font-bold tracking-[0.12em] text-accent uppercase">{{ experience.dates }}</p>
             <h3 class="mt-3 font-serif text-3xl leading-none tracking-[-0.05em] sm:text-5xl">{{ experience.role }}</h3>
-            <a v-if="experience.companyUrl" class="mt-2 inline-block text-lg text-ink/80 underline decoration-primary underline-offset-4 hover:text-primary sm:text-xl" :href="experience.companyUrl" target="_blank" rel="noreferrer">{{ experience.company }}</a>
+            <a v-if="experience.companyUrl" class="mt-2 inline-block text-lg text-ink/80 underline decoration-primary underline-offset-4 hover:text-accent sm:text-xl" :href="experience.companyUrl" target="_blank" rel="noreferrer">{{ experience.company }}</a>
             <p v-else class="mt-2 text-lg text-ink/80 sm:text-xl">{{ experience.company }}</p>
             <p class="mt-6 max-w-2xl text-base leading-relaxed text-muted-ink sm:text-lg">{{ experience.summary }}</p>
             <ul v-if="experience.highlights.length" class="mt-6 max-w-3xl space-y-3 text-sm leading-relaxed text-muted-ink sm:text-base">

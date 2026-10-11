@@ -32,11 +32,11 @@ onMounted(() => {
     </div>
 
     <SiteHeader class="-mx-5 -mt-5 sm:-mx-10 lg:-mx-20" />
-    <RouterLink v-if="isAdmin" class="absolute top-20 right-5 z-20 text-xs font-bold text-primary sm:right-10 lg:right-20" to="/admin">Admin</RouterLink>
+    <RouterLink v-if="isAdmin" class="absolute top-20 right-5 z-20 text-xs font-bold text-accent sm:right-10 lg:right-20" to="/admin">Admin</RouterLink>
 
     <div class="mx-auto grid min-h-[calc(100svh-9rem)] w-full max-w-350 grid-cols-1 items-center gap-8 py-10 sm:gap-10 sm:py-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-28 lg:py-20">
       <div class="mx-auto max-w-156 text-center lg:mx-0 lg:text-left">
-        <p class="mb-6 text-xs font-bold tracking-[0.14em] text-primary uppercase">About me · educator · builder</p>
+        <p class="mb-6 text-xs font-bold tracking-[0.14em] text-accent uppercase">About me · educator · builder</p>
         <h1 id="hero-heading" class="max-w-none font-serif text-5xl leading-[0.9] tracking-[-0.075em] sm:text-7xl lg:max-w-[9ch] lg:text-8xl xl:text-9xl">
           Hi, I’m Ryan.<br />I build to learn.
         </h1>
@@ -58,15 +58,15 @@ onMounted(() => {
           rel="noopener noreferrer"
           :aria-label="`Open ${project.title} in a new tab`"
         >
-          <span class="orbit-project-card absolute top-[-8%] left-1/2 grid aspect-square w-[16%] place-items-center rounded-2xl border border-primary/70 bg-white/85 p-1 text-center text-[0.42rem] leading-tight text-primary shadow-[0_0_28px_rgba(14,165,233,0.12)]">{{ project.title }}</span>
+          <span class="orbit-project-card absolute top-[-8%] left-1/2 grid aspect-square w-[16%] place-items-center rounded-2xl border border-primary/70 bg-surface/85 p-1 text-center text-[0.42rem] leading-tight text-accent shadow-[0_0_28px_rgba(168,85,247,0.18)]">{{ project.title }}</span>
         </a>
 
         <div class="absolute inset-0 z-10" aria-label="Ryan Abdulaziz">
-          <div class="absolute top-1/2 left-1/2 aspect-square w-[52%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full border border-primary/70 bg-canvas/80 p-2 shadow-[0_0_55px_rgba(14,165,233,0.32)] sm:w-[56%]">
+          <div class="absolute top-1/2 left-1/2 aspect-square w-[52%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full border border-primary/70 bg-canvas/80 p-2 shadow-[0_0_55px_rgba(168,85,247,0.35)] sm:w-[56%]">
             <img class="size-full scale-[1.12] object-contain drop-shadow-[0_12px_18px_rgba(0,0,0,0.45)]" src="@/assets/profile.png" alt="Ryan Abdulaziz" />
           </div>
           <p class="absolute top-[78%] left-1/2 w-full -translate-x-1/2 text-center font-serif text-xl leading-tight font-bold tracking-[-0.05em] sm:top-[80%] sm:text-2xl">
-            Ryan Abdulaziz<br /><span class="font-sans text-xs font-bold tracking-[0.12em] text-primary uppercase sm:text-sm">Spring Boot Engineer · Instructor · Content Creator</span>
+            Ryan Abdulaziz<br /><span class="font-sans text-xs font-bold tracking-[0.12em] text-accent uppercase sm:text-sm">Spring Boot Engineer · Instructor · Content Creator</span>
           </p>
         </div>
       </div>
@@ -74,7 +74,7 @@ onMounted(() => {
 
     <footer class="mx-auto flex max-w-350 items-center justify-between text-xs font-bold tracking-[0.11em] text-muted-ink uppercase">
       <p>Scroll to explore</p>
-      <span class="text-xl text-primary" aria-hidden="true">↓</span>
+      <span class="text-xl text-accent" aria-hidden="true">↓</span>
     </footer>
   </section>
 </template>
@@ -94,9 +94,9 @@ onMounted(() => {
 
 .orbit-project-card:hover,
 .orbit-project:focus-visible .orbit-project-card {
-  border-color: color-mix(in srgb, var(--color-primary) 35%, white);
-  background-color: color-mix(in srgb, var(--color-primary) 12%, white);
-  box-shadow: 0 0 12px 3px rgba(255, 255, 255, .8), 0 0 42px 12px rgba(14, 165, 233, .38);
+  border-color: color-mix(in srgb, var(--color-accent) 45%, var(--color-surface));
+  background-color: color-mix(in srgb, var(--color-accent) 16%, var(--color-surface));
+  box-shadow: 0 0 12px 3px rgba(255, 255, 255, .8), 0 0 42px 12px rgba(168, 85, 247, .45);
   color: var(--color-ink);
   filter: brightness(1.18);
 }
