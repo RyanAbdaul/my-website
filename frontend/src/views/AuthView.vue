@@ -32,7 +32,7 @@ async function submit() {
 <template>
   <main class="min-h-svh bg-canvas px-5 py-8 text-ink sm:px-10">
     <section class="mx-auto mt-[12vh] max-w-md rounded-3xl border border-ink/15 bg-white p-7 shadow-sm sm:p-10">
-      <RouterLink to="/about" class="text-sm font-bold tracking-[0.12em] text-primary uppercase">← BashMobarmeg Academy</RouterLink>
+      <RouterLink to="/about" class="text-sm font-bold tracking-[0.12em] text-accent uppercase">← BashMobarmeg Academy</RouterLink>
       <h1 class="mt-7 font-serif text-5xl leading-none tracking-[-0.06em]">{{ mode === 'register' ? 'Create account' : 'Welcome back' }}</h1>
       <p class="mt-4 text-muted-ink">{{ mode === 'register' ? 'Register as a learner to get started.' : 'Sign in to your account.' }}</p>
       <form class="mt-8 space-y-4" @submit.prevent="submit">
@@ -42,7 +42,7 @@ async function submit() {
         <p v-if="error" class="text-sm text-red-600">{{ error }}</p>
         <button class="w-full rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white" :disabled="loading">{{ loading ? 'Please wait…' : mode === 'register' ? 'Register' : 'Log in' }}</button>
       </form>
-      <p class="mt-6 text-sm text-muted-ink"><RouterLink v-if="mode === 'login'" class="text-primary" to="/auth?mode=register">Need an account? Register</RouterLink><RouterLink v-else class="text-primary" to="/auth?mode=login">Already registered? Log in</RouterLink></p>
+      <p class="mt-6 text-sm text-muted-ink"><RouterLink v-if="mode === 'login'" class="text-accent" to="/auth?mode=register">Need an account? Register</RouterLink><RouterLink v-else class="text-accent" to="/auth?mode=login">Already registered? Log in</RouterLink></p>
     </section>
   </main>
 </template>

@@ -131,7 +131,7 @@ onMounted(async () => {
 }
 .kicker {
   margin: 0;
-  color: var(--color-secondary);
+  color: var(--color-accent);
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.15em;
@@ -143,8 +143,8 @@ h1 {
   letter-spacing: -0.08em;
 }
 h1 span {
-  color: var(--color-secondary);
-  text-shadow: 0 0 30px color-mix(in srgb, var(--color-secondary) 33%, transparent);
+  color: var(--color-accent);
+  text-shadow: 0 0 30px color-mix(in srgb, var(--color-accent) 33%, transparent);
 }
 .hero-copy > p:not(.kicker) {
   max-width: 29rem;
@@ -168,18 +168,18 @@ h1 span {
 }
 .primary-action {
   background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
-  box-shadow: 0 12px 30px color-mix(in srgb, var(--color-secondary) 24%, transparent);
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--color-accent) 30%, transparent);
   color: white;
 }
 .secondary-action {
   border: 1px solid color-mix(in srgb, var(--color-secondary) 60%, transparent);
-  color: var(--color-secondary);
+  color: var(--color-accent);
 }
 .primary-action:hover,
 .secondary-action:hover {
   transform: translateY(-3px);
   color: white;
-  box-shadow: 0 18px 34px color-mix(in srgb, var(--color-secondary) 25%, transparent);
+  box-shadow: 0 18px 34px color-mix(in srgb, var(--color-accent) 28%, transparent);
 }
 .hero-art {
   min-height: 34rem;
@@ -206,7 +206,7 @@ h1 span {
   max-width: none;
   object-fit: contain;
   transform: translateX(-50%);
-  filter: drop-shadow(0 1.25rem 1.5rem rgb(2 8 23 / 45%));
+  filter: drop-shadow(0 1.25rem 1.5rem rgb(0 0 0 / 45%));
 }
 .hero-sword {
   position: absolute;
@@ -215,7 +215,7 @@ h1 span {
   left: 50%;
   width: min(42rem, 125%);
   transform: translate(-50%, -50%);
-  filter: drop-shadow(0 0.35rem 1rem rgb(6 182 212 / 45%));
+  filter: drop-shadow(0 0.35rem 1rem rgb(168 85 247 / 45%));
   animation: sword-float 3.4s ease-in-out infinite;
 }
 @keyframes sword-float {
@@ -248,7 +248,7 @@ h1 span {
   letter-spacing: -0.07em;
 }
 .section-title > a {
-  color: var(--color-secondary);
+  color: var(--color-accent);
   font-size: 0.85rem;
   font-weight: 800;
 }
@@ -278,8 +278,8 @@ h1 span {
   transform: translateY(-7px);
   border-color: var(--color-secondary);
   box-shadow:
-    0 20px 34px #02081780,
-    0 0 28px color-mix(in srgb, var(--color-secondary) 18%, transparent);
+    0 20px 34px rgba(0, 0, 0, 0.5),
+    0 0 28px color-mix(in srgb, var(--color-accent) 18%, transparent);
 }
 .course-icon {
   display: grid;
@@ -288,12 +288,12 @@ h1 span {
   place-items: center;
   border-radius: 0.85rem;
   background: color-mix(in srgb, var(--color-secondary) 18%, transparent);
-  color: var(--color-secondary);
+  color: var(--color-accent);
   font-size: 1.3rem;
 }
 .course-card p {
   margin: 1.3rem 0 0.55rem;
-  color: var(--color-secondary);
+  color: var(--color-accent);
   font-size: 0.62rem;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -315,7 +315,7 @@ h1 span {
   justify-content: space-between;
   margin-top: auto;
   padding-top: 1rem;
-  color: var(--color-secondary);
+  color: var(--color-accent);
   font-size: 0.8rem;
 }
 .course-card i {
@@ -337,7 +337,7 @@ h1 span {
   padding-inline: 1.5rem;
 }
 .benefits b {
-  color: var(--color-secondary);
+  color: var(--color-accent);
   font-size: 0.88rem;
 }
 .benefits span {

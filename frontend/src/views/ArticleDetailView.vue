@@ -16,7 +16,7 @@ onMounted(async () => { try { article.value = await api<Article>(`/articles/${ro
 </script>
 
 <template>
-  <main class="min-h-svh bg-canvas text-ink"><SiteHeader /><section class="mx-auto max-w-3xl px-5 py-20 sm:px-10"><RouterLink to="/articles" class="text-sm font-bold text-primary">← All articles</RouterLink><p v-if="error" class="mt-10 text-red-600">{{ error }}</p><article v-else-if="article" class="mt-10"><div class="flex flex-wrap gap-2"><span v-for="tag in article.tags" :key="tag" class="rounded-full bg-primary/15 px-2 py-1 text-xs font-bold text-primary">{{ tag }}</span></div><h1 class="mt-6 font-serif text-6xl tracking-[-.06em]">{{ article.title }}</h1><p class="mt-4 text-sm text-muted-ink">{{ new Intl.DateTimeFormat('en', { dateStyle: 'long' }).format(new Date(article.createTime)) }}</p><div class="article-body mt-10 text-lg leading-relaxed text-muted-ink" v-html="renderedContent"></div></article><p v-else class="mt-10 text-muted-ink">Loading article…</p></section><SiteFooter /></main>
+  <main class="min-h-svh bg-canvas text-ink"><SiteHeader /><section class="mx-auto max-w-3xl px-5 py-20 sm:px-10"><RouterLink to="/articles" class="text-sm font-bold text-accent">← All articles</RouterLink><p v-if="error" class="mt-10 text-red-600">{{ error }}</p><article v-else-if="article" class="mt-10"><div class="flex flex-wrap gap-2"><span v-for="tag in article.tags" :key="tag" class="rounded-full bg-primary/15 px-2 py-1 text-xs font-bold text-accent">{{ tag }}</span></div><h1 class="mt-6 font-serif text-6xl tracking-[-.06em]">{{ article.title }}</h1><p class="mt-4 text-sm text-muted-ink">{{ new Intl.DateTimeFormat('en', { dateStyle: 'long' }).format(new Date(article.createTime)) }}</p><div class="article-body mt-10 text-lg leading-relaxed text-muted-ink" v-html="renderedContent"></div></article><p v-else class="mt-10 text-muted-ink">Loading article…</p></section><SiteFooter /></main>
 </template>
 
 <style scoped>
@@ -29,8 +29,8 @@ onMounted(async () => { try { article.value = await api<Article>(`/articles/${ro
 .article-body :deep(ul) { list-style: disc; }
 .article-body :deep(ol) { list-style: decimal; }
 .article-body :deep(blockquote) { border-left: 4px solid var(--color-primary); padding-left: 1rem; color: var(--color-ink); font-style: italic; }
-.article-body :deep(code) { border-radius: .25rem; background: color-mix(in srgb, var(--color-primary) 12%, white); padding: .1rem .3rem; color: var(--color-ink); font-size: .9em; }
+.article-body :deep(code) { border-radius: .25rem; background: color-mix(in srgb, var(--color-primary) 16%, var(--color-surface)); padding: .1rem .3rem; color: var(--color-ink); font-size: .9em; }
 .article-body :deep(pre) { overflow-x: auto; border-radius: 1rem; background: color-mix(in srgb, var(--color-canvas) 78%, var(--color-primary)); padding: 1.25rem; color: var(--color-ink); }
 .article-body :deep(pre code) { background: transparent; padding: 0; color: inherit; }
-.article-body :deep(a) { color: var(--color-primary); font-weight: 700; text-decoration: underline; }
+.article-body :deep(a) { color: var(--color-accent); font-weight: 700; text-decoration: underline; }
 </style>
