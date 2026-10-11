@@ -11,7 +11,7 @@ onMounted(() => {
 
 <template>
   <RouterView v-slot="{ Component, route }">
-    <div :key="route.fullPath" class="relative isolate overflow-hidden">
+    <div :key="route.fullPath" class="app-shell relative isolate overflow-hidden">
       <AmbientOrbs />
       <component :is="Component" class="relative z-10" />
     </div>

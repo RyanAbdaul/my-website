@@ -4,16 +4,60 @@
 @theme {
   --font-sans: 'DM Sans', Arial, sans-serif;
   --font-serif: 'Cairo', Arial, sans-serif;
-  --color-canvas: #ffffff;
-  --color-ink: #102033;
-  --color-muted-ink: #5a6b7d;
-  --color-primary: #0ea5e9;
-  --color-secondary: #7dd3fc;
+  --color-canvas: #0f172a;
+  --color-ink: #f8fafc;
+  --color-muted-ink: #cbd5e1;
+  --color-primary: #7c3aed;
+  --color-secondary: #06b6d4;
+  --color-tertiary: #4b237d;
+  --color-surface: #17213a;
+  --color-surface-raised: #1d2945;
 }
 
 @layer base {
-  html { scroll-behavior: smooth; }
-  body { @apply m-0 min-w-80 bg-canvas text-ink antialiased; font-family: Arial, Helvetica, sans-serif; }
-  h1, h2, h3, h4, h5, h6 { font-family: 'Cairo', Arial, sans-serif; }
-  button, input, textarea, select { font: inherit; }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply m-0 min-w-80 bg-canvas text-ink antialiased;
+    background-image:
+      radial-gradient(
+        circle at 12% 0%,
+        color-mix(in srgb, var(--color-primary) 18%, transparent),
+        transparent 29rem
+      ),
+      radial-gradient(
+        circle at 88% 18%,
+        color-mix(in srgb, var(--color-secondary) 12%, transparent),
+        transparent 32rem
+      );
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Cairo', Arial, sans-serif;
+  }
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+  ::selection { background: color-mix(in srgb, var(--color-secondary) 42%, transparent); color: var(--color-ink); }
+  :focus-visible { outline: 2px solid var(--color-secondary); outline-offset: 3px; }
+}
+
+/* Surfaces use a restrained navy derived from the Midnight base, while violet and cyan stay reserved for emphasis. */
+.bg-white {
+  background-color: var(--color-surface) !important;
+}
+
+/* Let the animated scene behind each route show through the broad page canvases.
+   Cards and controls keep their solid surface color for contrast and readability. */
+.app-shell .bg-canvas {
+  background-color: rgb(15 23 42 / 74%) !important;
 }

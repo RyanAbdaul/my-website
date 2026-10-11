@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import MemberProfileView from '@/views/MemberProfileView.vue'
+import RyanProfileView from '@/views/RyanProfileView.vue'
 </script>
 
 <template>
-  <MemberProfileView slug="ryan" />
+  <RyanProfileView />
 </template>

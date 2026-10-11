@@ -23,7 +23,7 @@ const linkClass = (active: boolean) => active
 
 <style scoped>
 .nav-link { position: relative; color: var(--color-muted-ink); transition: color .2s ease, text-shadow .2s ease; }
-.nav-link:hover { color: var(--color-ink); }
+.nav-link:hover { color: var(--color-secondary); text-shadow: 0 0 14px color-mix(in srgb, var(--color-secondary) 70%, transparent); }
 .nav-link-active { color: var(--color-primary); font-weight: 800; text-shadow: 0 0 14px color-mix(in srgb, var(--color-primary) 80%, transparent); }
 .nav-link-active::after { position: absolute; right: 0; bottom: -7px; left: 0; height: 2px; border-radius: 9999px; background: var(--color-primary); box-shadow: 0 0 10px var(--color-primary); content: ''; }
 </style>

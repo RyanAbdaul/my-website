@@ -30,7 +30,7 @@ onMounted(async () => { try { article.value = await api<Article>(`/articles/${ro
 .article-body :deep(ol) { list-style: decimal; }
 .article-body :deep(blockquote) { border-left: 4px solid var(--color-primary); padding-left: 1rem; color: var(--color-ink); font-style: italic; }
 .article-body :deep(code) { border-radius: .25rem; background: color-mix(in srgb, var(--color-primary) 12%, white); padding: .1rem .3rem; color: var(--color-ink); font-size: .9em; }
-.article-body :deep(pre) { overflow-x: auto; border-radius: 1rem; background: #102033; padding: 1.25rem; color: #e2e8f0; }
+.article-body :deep(pre) { overflow-x: auto; border-radius: 1rem; background: color-mix(in srgb, var(--color-canvas) 78%, var(--color-primary)); padding: 1.25rem; color: var(--color-ink); }
 .article-body :deep(pre code) { background: transparent; padding: 0; color: inherit; }
 .article-body :deep(a) { color: var(--color-primary); font-weight: 700; text-decoration: underline; }
 </style>

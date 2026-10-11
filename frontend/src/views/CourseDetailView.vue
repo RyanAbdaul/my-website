@@ -7,9 +7,8 @@ import SiteHeader from '@/components/SiteHeader.vue'
 import SiteFooter from '@/components/SiteFooter.vue'
 
 type Lesson = { id: string; title: string }
-type Instructor = { id: string; slug: string; name: string; headline: string | null; photoUrl: string | null }
 type Review = { id: string; studentName: string; rating: number; comment: string | null }
-type Course = { id: string; title: string; description: string; price: number; thumbnailLink: string | null; members: Instructor[] }
+type Course = { id: string; title: string; description: string; price: number; thumbnailLink: string | null }
 
 const route = useRoute()
 const router = useRouter()
@@ -19,10 +18,6 @@ const reviews = ref<Review[]>([])
 const error = ref('')
 const enrollmentError = ref('')
 const enrolling = ref(false)
-
-function initials(name: string) {
-  return name.split(' ').map((part) => part[0]).join('').slice(0, 2).toUpperCase()
-}
 
 onMounted(async () => {
   const courseId = String(route.params.courseId)
@@ -59,7 +54,7 @@ async function enroll() {
 <template>
   <main class="min-h-svh bg-canvas text-ink">
     <SiteHeader />
-    <section class="border-b border-ink/15 bg-linear-to-br from-sky-50 via-white to-secondary/20">
+    <section class="border-b border-ink/15 bg-linear-to-br from-canvas via-canvas to-secondary/20">
       <div class="mx-auto grid max-w-350 gap-10 px-5 py-12 sm:px-10 lg:grid-cols-[minmax(0,1fr)_27rem] lg:px-20 lg:py-18">
         <div>
           <RouterLink to="/courses" class="text-sm font-bold text-primary transition hover:text-ink">← All courses</RouterLink>
@@ -78,12 +73,11 @@ async function enroll() {
     </section>
 
     <section v-if="course" class="mx-auto max-w-350 px-5 py-14 sm:px-10 lg:px-20 lg:py-18">
-      <div class="grid gap-16 lg:grid-cols-[minmax(0,1fr)_18rem]">
+      <div>
         <div>
           <section><p class="section-label">Table of contents</p><ol v-if="lessons.length" class="mt-6 overflow-hidden rounded-2xl border border-ink/15 bg-white"><li v-for="(lesson, index) in lessons" :key="lesson.id" class="flex items-center gap-4 border-b border-ink/10 px-5 py-4 last:border-b-0"><span class="grid size-7 shrink-0 place-items-center rounded-full bg-primary/12 text-xs font-bold text-primary">{{ index + 1 }}</span><span class="font-semibold">{{ lesson.title }}</span></li></ol><p v-else class="mt-6 rounded-2xl border border-dashed border-ink/20 p-6 text-muted-ink">Lessons will be added soon.</p></section>
           <section class="mt-16 border-t border-ink/15 pt-14"><p class="section-label">Reviews</p><div v-if="reviews.length" class="mt-7 space-y-5"><article v-for="review in reviews" :key="review.id" class="rounded-2xl border border-ink/12 bg-white p-6"><div class="flex items-center justify-between gap-4"><h3 class="font-bold">{{ review.studentName }}</h3><span class="text-sm font-bold text-primary">{{ '★'.repeat(review.rating) }}<span class="text-ink/20">{{ '★'.repeat(5 - review.rating) }}</span></span></div><p v-if="review.comment" class="mt-3 leading-relaxed text-muted-ink">{{ review.comment }}</p></article></div><p v-else class="mt-6 text-muted-ink">No reviews yet.</p></section>
         </div>
-        <aside><p class="section-label">Instructors</p><div v-if="course.members.length" class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-1"><RouterLink v-for="instructor in course.members" :key="instructor.id" :to="`/members/${instructor.slug}`" class="overflow-hidden rounded-2xl border border-ink/15 bg-white transition hover:-translate-y-1 hover:border-primary"><img v-if="instructor.photoUrl" :src="instructor.photoUrl" :alt="instructor.name" class="aspect-square w-full object-cover" /><div v-else class="grid aspect-square place-items-center bg-secondary/25 font-serif text-4xl font-bold text-primary">{{ initials(instructor.name) }}</div><div class="p-4"><h3 class="font-bold">{{ instructor.name }}</h3><p v-if="instructor.headline" class="mt-1 text-sm text-muted-ink">{{ instructor.headline }}</p></div></RouterLink></div><p v-else class="mt-6 text-muted-ink">Instructor details coming soon.</p></aside>
       </div>
     </section>
     <SiteFooter />

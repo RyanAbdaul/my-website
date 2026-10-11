@@ -42,16 +42,10 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue'),
     },
     {
-      path: '/members/:slug',
-      name: 'member-profile',
-      component: () => import('../views/MemberProfileView.vue'),
-    },
-    {
       path: '/admin',
       name: 'admin',
       component: AdminView,
     },
-    { path: '/admin/members/:slug?', name: 'member-admin', component: () => import('../views/MemberAdminView.vue') },
     {
       path: '/auth',
       name: 'auth',
