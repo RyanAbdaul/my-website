@@ -1,8 +1,8 @@
 <svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="500" height="500" fill="#e0f2fe"/>
-  <circle cx="250" cy="185" r="88" fill="#0EA5E9" fill-opacity=".9"/>
+  <rect width="500" height="500" fill="#150b22"/>
+  <circle cx="250" cy="185" r="88" fill="#8328e6" fill-opacity=".9"/>
   <path d="M86 500C100 359 166 298 250 298C334 298 400 359 414 500H86Z" fill="#0A090E"/>
-  <path d="M173 212C173 181 208 136 250 136C292 136 327 181 327 212C327 255 293 284 250 284C207 284 173 255 173 212Z" fill="#F5E9FF"/>
+  <path d="M173 212C173 181 208 136 250 136C292 136 327 181 327 212C327 255 293 284 250 284C207 284 173 255 173 212Z" fill="#a855f7"/>
   <path d="M171 194C171 123 216 86 250 86C301 86 335 125 332 192C304 166 280 157 248 157C212 157 189 172 171 194Z" fill="#0A090E"/>
   <circle cx="220" cy="215" r="6" fill="#0A090E"/>
   <circle cx="280" cy="215" r="6" fill="#0A090E"/>
