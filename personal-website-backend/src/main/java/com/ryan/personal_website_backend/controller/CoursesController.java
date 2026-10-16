@@ -1,5 +1,7 @@
 package com.ryan.personal_website_backend.controller;
 
+import com.ryan.personal_website_backend.annotation.RateLimit;
+import com.ryan.personal_website_backend.annotation.RateLimitTier;
 import com.ryan.personal_website_backend.dto.*;
 import com.ryan.personal_website_backend.service.CourseService;
 import jakarta.validation.Valid;
@@ -32,6 +34,7 @@ public class CoursesController {
     }
 
     @GetMapping
+    @RateLimit(RateLimitTier.RELAXED)
     public List<ResponseCourseDTO> getAllCourses(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) Double minPrice,

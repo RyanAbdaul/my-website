@@ -25,6 +25,13 @@ app:
     password: ${BOOTSTRAP_ADMIN_PASSWORD:}
     name: ${BOOTSTRAP_ADMIN_NAME:Initial Administrator}
   public-site-url: ${PUBLIC_SITE_URL:http://localhost:5173}
+  rate-limit:
+    relaxed:
+      requests: 60
+      window-seconds: 60
+    strict:
+      requests: 10
+      window-seconds: 60
   linkedin:
     client-id: ${LINKEDIN_CLIENT_ID:}
     client-secret: ${LINKEDIN_CLIENT_SECRET:}

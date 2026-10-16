@@ -1,5 +1,7 @@
 package com.ryan.personal_website_backend.controller;
 
+import com.ryan.personal_website_backend.annotation.RateLimit;
+import com.ryan.personal_website_backend.annotation.RateLimitTier;
 import com.ryan.personal_website_backend.dto.AuthenticationRequest;
 import com.ryan.personal_website_backend.dto.AuthenticationResponse;
 import com.ryan.personal_website_backend.dto.AuthenticatedUserResponse;
@@ -23,6 +25,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/students")
+    @RateLimit(RateLimitTier.STRICT)
     public AuthenticationResponse register(
             @Valid @RequestBody AuthenticationRequest request) {
 
@@ -30,6 +33,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
+    @RateLimit(RateLimitTier.STRICT)
     public AuthenticationResponse login(
             @Valid @RequestBody LoginRequest request) {
 
