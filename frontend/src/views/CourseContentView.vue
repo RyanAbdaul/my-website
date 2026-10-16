@@ -2,12 +2,14 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { api } from '@/lib/api'
+import { isSignedIn } from '@/lib/auth'
 import SiteHeader from '@/components/SiteHeader.vue'
 
 type Course = { id: string; title: string }
 type Lesson = { id: string; title: string; videoLink: string | null; createTime?: string }
 type Unit = { id: string; title: string; description: string | null; orderIndex: number; lessons: Lesson[] }
 type CourseSection = { id: string; title: string; description: string | null; orderIndex: number; units: Unit[] }
+type RemoteProgress = { completedLessonIds: string[]; lastLessonId: string | null }
 
 const route = useRoute()
 const course = ref<Course | null>(null)
@@ -57,7 +59,12 @@ function lessonLocation(lessonId: string): { sectionId: string; unitId: string }
 }
 function selectLesson(id: string) {
   selectedLessonId.value = id
-  if (course.value) saveLastLesson(course.value.id, id)
+  if (course.value) {
+    saveLastLesson(course.value.id, id)
+    if (isSignedIn.value) {
+      api(`/progress/course/${course.value.id}/last-lesson`, { method: 'PUT', body: JSON.stringify({ lessonId: id }) }).catch(() => {})
+    }
+  }
   const location = lessonLocation(id)
   if (location) {
     openSections.value = new Set(openSections.value).add(location.sectionId)
@@ -66,7 +73,15 @@ function selectLesson(id: string) {
   if (window.innerWidth < 1024) sidebarOpen.value = false
 }
 function selectAdjacentLesson(direction: -1 | 1) { const lesson = allLessons.value[selectedLessonIndex.value + direction]; if (lesson) selectLesson(lesson.id) }
-function toggleLessonComplete(id: string) { const next = new Set(completedLessonIds.value); next.has(id) ? next.delete(id) : next.add(id); completedLessonIds.value = next; saveProgress() }
+function toggleLessonComplete(id: string) {
+  const next = new Set(completedLessonIds.value)
+  next.has(id) ? next.delete(id) : next.add(id)
+  completedLessonIds.value = next
+  saveProgress()
+  if (isSignedIn.value) {
+    api(`/progress/lesson/${id}/me`, { method: 'PUT', body: JSON.stringify({ isComplete: next.has(id) }) }).catch(() => {})
+  }
+}
 
 onMounted(async () => {
   sidebarOpen.value = window.matchMedia('(min-width: 1024px)').matches
@@ -81,9 +96,19 @@ onMounted(async () => {
     loadProgress(courseId)
 
     const lessons = allLessons.value
-    const remembered = loadLastLesson(courseId)
+    let lastLessonId: string | null = loadLastLesson(courseId)
+
+    if (isSignedIn.value) {
+      try {
+        const remote = await api<RemoteProgress>(`/progress/course/${courseId}/me`)
+        completedLessonIds.value = new Set(remote.completedLessonIds ?? [])
+        saveProgress()
+        if (remote.lastLessonId) lastLessonId = remote.lastLessonId
+      } catch { /* keep localStorage state when offline */ }
+    }
+
     const fallback = lessons.find((lesson) => youtubeEmbedUrl(lesson.videoLink))?.id ?? lessons[0]?.id ?? null
-    selectedLessonId.value = remembered && lessons.some((lesson) => lesson.id === remembered) ? remembered : fallback
+    selectedLessonId.value = lastLessonId && lessons.some((lesson) => lesson.id === lastLessonId) ? lastLessonId : fallback
 
     const firstSection = sections.value[0]
     if (firstSection) {
