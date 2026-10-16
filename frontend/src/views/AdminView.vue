@@ -26,6 +26,7 @@ type Course = {
   enrollments?: Enrollment[]
 }
 type Article = { id: string; title: string; content: string; tags: string[] }
+type Tag = { id: string; name: string }
 type Lesson = { id: string; courseId: string; title: string; videoLink: string | null }
 type CourseSection = {
   id: string
@@ -80,6 +81,7 @@ const activeTab = ref<Tab>('dashboard'),
   password = ref('')
 const profile = ref({ name: '', headline: '', biography: '', photoUrl: '' })
 const article = ref({ title: '', content: '', tags: '' })
+const allTags = ref<Tag[]>([])
 const course = ref({ title: '', description: '', price: '0', thumbnailLink: '', status: 'ACTIVE' as Course['status'] })
 const lesson = ref({ courseId: '', title: '', videoLink: '' })
 const section = ref({ courseId: '', title: '', description: '', orderIndex: '0' })
@@ -217,6 +219,9 @@ async function loadStudents() {
 async function loadLinkedIn() {
   linkedIn.value = await api<LinkedInConnection>('/linkedin/connection')
 }
+async function loadTags() {
+  allTags.value = await api<Tag[]>('/tags').catch(() => [])
+}
 async function login() {
   await submit(async () => {
     const auth = await api<{ token: string; role: string }>('/auth/login', {
@@ -232,6 +237,7 @@ async function login() {
       loadPortfolio(),
       loadStudents(),
       loadLinkedIn(),
+      loadTags(),
     ])
   }, 'Signed in.')
 }
@@ -261,6 +267,21 @@ async function uploadProfilePhoto(event: Event) {
 function resetArticle() {
   article.value = { title: '', content: '', tags: '' }
   editingArticleId.value = null
+}
+const tagSuggestions = computed(() => {
+  const parts = article.value.tags.split(',')
+  const current = (parts[parts.length - 1] ?? '').trim().toLowerCase()
+  if (!current) return []
+  const added = new Set(parts.slice(0, -1).map((part) => part.trim().toLowerCase()).filter(Boolean))
+  return allTags.value
+    .filter((tag) => !added.has(tag.name.toLowerCase()) && tag.name.toLowerCase().includes(current))
+    .slice(0, 8)
+})
+function applyTag(name: string) {
+  const parts = article.value.tags.split(',').map((part) => part.trim()).filter(Boolean)
+  parts.pop()
+  parts.push(name.trim())
+  article.value.tags = parts.join(', ')
 }
 function resetCourse() {
   course.value = { title: '', description: '', price: '0', thumbnailLink: '', status: 'ACTIVE' }
@@ -636,6 +657,7 @@ onMounted(async () => {
       loadPortfolio(),
       loadStudents(),
       loadLinkedIn(),
+      loadTags(),
     ])
   } catch {
     signOut()
@@ -753,11 +775,16 @@ onMounted(async () => {
               class="field"
               placeholder="Article title"
               required
-            /><input
-              v-model="article.tags"
-              class="field"
-              placeholder="Tags, separated by commas"
-            /><textarea
+            /><div class="relative">
+              <input
+                v-model="article.tags"
+                class="field"
+                placeholder="Tags, separated by commas"
+              />
+              <div v-if="tagSuggestions.length" class="tag-suggestions">
+                <button v-for="tag in tagSuggestions" :key="tag.id" type="button" class="tag-suggestion" @click="applyTag(tag.name)">{{ tag.name }}</button>
+              </div>
+            </div><textarea
               v-model="article.content"
               class="field min-h-80"
               placeholder="Markdown content"
@@ -1207,6 +1234,9 @@ onMounted(async () => {
   text-transform: uppercase;
   color: var(--color-accent);
 }
+.tag-suggestions { position: absolute; z-index: 20; top: 100%; left: 0; right: 0; margin-top: .3rem; overflow: hidden; border: 1px solid color-mix(in srgb, var(--color-ink) 14%, transparent); border-radius: .6rem; background: var(--color-surface-raised); box-shadow: 0 10px 28px rgb(0 0 0 / 35%); }
+.tag-suggestion { display: block; width: 100%; padding: .55rem .75rem; border: 0; text-align: left; font-size: .8rem; font-weight: 600; color: var(--color-ink); cursor: pointer; }
+.tag-suggestion:hover { background: color-mix(in srgb, var(--color-primary) 16%, var(--color-surface)); color: var(--color-accent); }
 .admin-sidebar,
 .editor-card {
   border: 1px solid color-mix(in srgb, var(--color-ink) 14%, transparent);
