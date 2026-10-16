@@ -66,3 +66,10 @@
 .app-shell .bg-canvas {
   background-color: rgb(13 7 21 / 78%) !important;
 }
+
+/* Custom cursor: hide the native cursor while the purple glow cursor is active,
+   but keep the text caret on text fields. */
+html.custom-cursor,
+html.custom-cursor * { cursor: none !important; }
+html.custom-cursor input,
+html.custom-cursor textarea { cursor: text !important; }
