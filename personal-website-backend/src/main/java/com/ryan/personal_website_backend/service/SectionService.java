@@ -1,9 +1,14 @@
 package com.ryan.personal_website_backend.service;
 
+import com.ryan.personal_website_backend.dto.ResponseLessonDTO;
+import com.ryan.personal_website_backend.dto.SectionContentDTO;
 import com.ryan.personal_website_backend.dto.SectionRequestDTO;
 import com.ryan.personal_website_backend.dto.SectionResponseDTO;
+import com.ryan.personal_website_backend.dto.UnitContentDTO;
 import com.ryan.personal_website_backend.entity.Course;
+import com.ryan.personal_website_backend.entity.Lesson;
 import com.ryan.personal_website_backend.entity.Section;
+import com.ryan.personal_website_backend.entity.Unit;
 import com.ryan.personal_website_backend.exception.CourseDoesNotExistException;
 import com.ryan.personal_website_backend.repository.CourseRepo;
 import com.ryan.personal_website_backend.repository.SectionRepo;
@@ -12,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -191,6 +197,58 @@ public class SectionService {
 
     public long getSectionCountByCourse(UUID courseId) {
         return sectionRepo.countByCourseId(courseId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<SectionContentDTO> getCourseContent(UUID courseId) {
+        return sectionRepo.findByCourseIdOrderByOrderIndexAsc(courseId)
+                .stream()
+                .map(this::mapToContentDTO)
+                .collect(Collectors.toList());
+    }
+
+    private SectionContentDTO mapToContentDTO(Section section) {
+        List<UnitContentDTO> units = nullSafe(section.getUnits()).stream()
+                .sorted(Comparator.comparing(Unit::getOrderIndex, Comparator.nullsLast(Comparator.naturalOrder())))
+                .map(this::mapUnitToContentDTO)
+                .collect(Collectors.toList());
+
+        return SectionContentDTO.builder()
+                .id(section.getId())
+                .title(section.getTitle())
+                .description(section.getDescription())
+                .orderIndex(section.getOrderIndex())
+                .units(units)
+                .build();
+    }
+
+    private UnitContentDTO mapUnitToContentDTO(Unit unit) {
+        List<ResponseLessonDTO> lessons = nullSafe(unit.getLessons()).stream()
+                .sorted(Comparator.comparing(Lesson::getCreateTime, Comparator.nullsLast(Comparator.naturalOrder())))
+                .map(this::mapLessonToContentDTO)
+                .collect(Collectors.toList());
+
+        return UnitContentDTO.builder()
+                .id(unit.getId())
+                .title(unit.getTitle())
+                .description(unit.getDescription())
+                .orderIndex(unit.getOrderIndex())
+                .lessons(lessons)
+                .build();
+    }
+
+    private ResponseLessonDTO mapLessonToContentDTO(Lesson lesson) {
+        return ResponseLessonDTO.builder()
+                .id(lesson.getId())
+                .courseId(lesson.getCourse() != null ? lesson.getCourse().getId() : null)
+                .title(lesson.getTitle())
+                .videoLink(lesson.getVideoLink())
+                .createTime(lesson.getCreateTime())
+                .build();
+    }
+
+    private static <T> List<T> nullSafe(List<T> list) {
+        return list == null ? List.of() : list;
     }
 
     private Section mapToEntity(SectionRequestDTO dto) {

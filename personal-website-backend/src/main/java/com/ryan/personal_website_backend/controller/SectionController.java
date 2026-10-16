@@ -1,5 +1,6 @@
 package com.ryan.personal_website_backend.controller;
 
+import com.ryan.personal_website_backend.dto.SectionContentDTO;
 import com.ryan.personal_website_backend.dto.SectionRequestDTO;
 import com.ryan.personal_website_backend.dto.SectionResponseDTO;
 import com.ryan.personal_website_backend.service.SectionService;
@@ -29,6 +30,12 @@ public class SectionController {
     @ResponseStatus(HttpStatus.OK)
     public List<SectionResponseDTO> getAllSectionsByCourse(@PathVariable UUID courseId) {
         return sectionService.getAllSectionsByCourse(courseId);
+    }
+
+    @GetMapping("/course/{courseId}/content")
+    @ResponseStatus(HttpStatus.OK)
+    public List<SectionContentDTO> getCourseContent(@PathVariable UUID courseId) {
+        return sectionService.getCourseContent(courseId);
     }
 
     @GetMapping("/{id}")
