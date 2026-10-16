@@ -3,12 +3,18 @@ import { onBeforeUnmount, onMounted, ref } from 'vue'
 
 const ambient = ref<HTMLElement | null>(null)
 let frameId: number | undefined
+let scatterFrameId: number | undefined
 let pointerX = 0
 let pointerY = 0
 let scrollY = 0
 let wakeAngle = 0
 let travelSpeed = 0
+let scatter = 1
+let lastMoveTime = 0
 let backgroundOrbs: HTMLElement[] = []
+
+const IDLE_THRESHOLD = 400
+const SCATTER_MAX = 1.7
 
 const cursorOrbs = [
   { x: -70, y: -36, size: 4, lag: '1320ms', delay: '-1.6s' },
@@ -71,6 +77,7 @@ function requestPaint() {
   if (!frameId) frameId = window.requestAnimationFrame(paintScene)
 }
 function followPointer(event: PointerEvent) {
+  lastMoveTime = performance.now()
   const deltaX = event.clientX - pointerX
   const deltaY = event.clientY - pointerY
   const distance = Math.hypot(deltaX, deltaY)
@@ -88,11 +95,23 @@ function followScroll() {
   requestPaint()
 }
 
+function tickScatter() {
+  const idle = performance.now() - lastMoveTime
+  const target = idle > IDLE_THRESHOLD ? SCATTER_MAX : 1
+  const ease = target > scatter ? 0.12 : 0.05
+  scatter += (target - scatter) * ease
+  const scene = ambient.value
+  if (scene) scene.style.setProperty('--scatter', scatter.toFixed(3))
+  scatterFrameId = window.requestAnimationFrame(tickScatter)
+}
+
 onMounted(() => {
   pointerX = window.innerWidth / 2
   pointerY = window.innerHeight / 2
   scrollY = window.scrollY
+  lastMoveTime = performance.now()
   paintScene()
+  scatterFrameId = window.requestAnimationFrame(tickScatter)
   window.addEventListener('pointermove', followPointer, { passive: true })
   window.addEventListener('scroll', followScroll, { passive: true })
   window.addEventListener('resize', requestPaint, { passive: true })
@@ -103,6 +122,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('scroll', followScroll)
   window.removeEventListener('resize', requestPaint)
   if (frameId) window.cancelAnimationFrame(frameId)
+  if (scatterFrameId) window.cancelAnimationFrame(scatterFrameId)
 })
 </script>
 
@@ -223,7 +243,10 @@ onBeforeUnmount(() => {
     0 0 10px 2px color-mix(in srgb, var(--color-primary) 52%, transparent),
     0 0 24px 7px color-mix(in srgb, var(--color-secondary) 28%, transparent);
   opacity: 0.68;
-  transform: translate(calc(-50% + var(--orbit-x)), calc(-50% + var(--orbit-y)));
+  transform: translate(
+    calc(-50% + var(--orbit-x) * var(--scatter, 1)),
+    calc(-50% + var(--orbit-y) * var(--scatter, 1))
+  );
   transition: top var(--lag) cubic-bezier(0.16, 1, 0.3, 1), left var(--lag) cubic-bezier(0.16, 1, 0.3, 1);
   animation: cursor-float 3.8s ease-in-out infinite alternate;
   animation-delay: var(--delay);
