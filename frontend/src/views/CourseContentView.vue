@@ -32,6 +32,9 @@ const videoUrl = computed(() => selectedLesson.value ? youtubeEmbedUrl(selectedL
 function storageKey(courseId: string) { return `course-progress:${courseId}` }
 function loadProgress(courseId: string) { try { const saved: unknown = JSON.parse(localStorage.getItem(storageKey(courseId)) ?? '[]'); if (Array.isArray(saved)) completedLessonIds.value = new Set(saved.filter((id): id is string => typeof id === 'string')) } catch { completedLessonIds.value = new Set() } }
 function saveProgress() { if (course.value) localStorage.setItem(storageKey(course.value.id), JSON.stringify([...completedLessonIds.value])) }
+function lastLessonKey(courseId: string) { return `course-last-lesson:${courseId}` }
+function loadLastLesson(courseId: string): string | null { try { return localStorage.getItem(lastLessonKey(courseId)) } catch { return null } }
+function saveLastLesson(courseId: string, lessonId: string) { try { localStorage.setItem(lastLessonKey(courseId), lessonId) } catch { /* ignore */ } }
 function youtubeEmbedUrl(link: string | null) { if (!link) return null; const value = link.trim(); try { const url = new URL(value); if (url.hostname === 'youtu.be') return `https://www.youtube.com/embed/${url.pathname.slice(1)}`; if (url.hostname.endsWith('youtube.com')) { const id = url.searchParams.get('v') ?? url.pathname.split('/').filter(Boolean).at(-1); return id ? `https://www.youtube.com/embed/${id}` : null } } catch { if (/^[\w-]{11}$/.test(value)) return `https://www.youtube.com/embed/${value}` } return null }
 
 function toggleSection(id: string) {
@@ -54,6 +57,7 @@ function lessonLocation(lessonId: string): { sectionId: string; unitId: string }
 }
 function selectLesson(id: string) {
   selectedLessonId.value = id
+  if (course.value) saveLastLesson(course.value.id, id)
   const location = lessonLocation(id)
   if (location) {
     openSections.value = new Set(openSections.value).add(location.sectionId)
@@ -77,7 +81,9 @@ onMounted(async () => {
     loadProgress(courseId)
 
     const lessons = allLessons.value
-    selectedLessonId.value = lessons.find((lesson) => youtubeEmbedUrl(lesson.videoLink))?.id ?? lessons[0]?.id ?? null
+    const remembered = loadLastLesson(courseId)
+    const fallback = lessons.find((lesson) => youtubeEmbedUrl(lesson.videoLink))?.id ?? lessons[0]?.id ?? null
+    selectedLessonId.value = remembered && lessons.some((lesson) => lesson.id === remembered) ? remembered : fallback
 
     const firstSection = sections.value[0]
     if (firstSection) {
