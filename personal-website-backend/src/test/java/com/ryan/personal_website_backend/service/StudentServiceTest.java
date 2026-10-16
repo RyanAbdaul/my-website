@@ -1,12 +1,14 @@
 package com.ryan.personal_website_backend.service;
 
-import com.ryan.personal_website_backend.dto.CreateStudentDTO;
-import com.ryan.personal_website_backend.dto.ResponseStudentDTO;
-import com.ryan.personal_website_backend.entity.Student;
-import com.ryan.personal_website_backend.entity.User;
-import com.ryan.personal_website_backend.exception.StudentAlreadyExistsException;
-import com.ryan.personal_website_backend.repository.StudentRepo;
-import com.ryan.personal_website_backend.repository.UserRepo;
+import com.ryan.personal_website_backend.student.StudentService;
+
+import com.ryan.personal_website_backend.student.CreateStudentDTO;
+import com.ryan.personal_website_backend.student.ResponseStudentDTO;
+import com.ryan.personal_website_backend.student.Student;
+import com.ryan.personal_website_backend.auth.User;
+import com.ryan.personal_website_backend.common.StudentAlreadyExistsException;
+import com.ryan.personal_website_backend.student.StudentRepo;
+import com.ryan.personal_website_backend.auth.UserRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

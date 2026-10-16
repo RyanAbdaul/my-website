@@ -1,0 +1,15 @@
+package com.ryan.personal_website_backend.course;
+
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.UUID;
+
+@Getter
+@Setter
+public class SetLastLessonDTO {
+
+    @NotNull(message = "lessonId is required")
+    private UUID lessonId;
+}
